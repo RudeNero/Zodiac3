@@ -1,3 +1,5 @@
+document.getElementById('btnBuscar').addEventListener('click', buscarPrevisao);
+
 async function buscarPrevisao() {
   const signo = document.getElementById("signo").value;
   const resultado = document.getElementById("resultado");
@@ -7,21 +9,41 @@ async function buscarPrevisao() {
     return;
   }
 
-  resultado.innerText = "Consultando os astros... ✨";
+  resultado.innerText = "Consultando a previsão...";
 
   try {
-    const res = await fetch(`https://horoscope-app-api.vercel.app/api/v1/get-horoscope/daily?sign=${signo}&day=TODAY`);
+    const response = await fetch(`https://api.api-ninjas.com/v1/horoscope?zodiac=${signo}`, {
+      method: 'GET',
+      headers: {
+        'X-Api-Key': 'be6gdp4tJHELeyYIXtBLbw==6pC27PkVO9p8GfA8',
+      },
+    });
 
-    if (!res.ok) throw new Error("Erro na API");
+    const data = await response.json();
 
-    const data = await res.json();
+    if (data && data.horoscope) {
+      // Traduzindo a resposta para português
+      const horoscopeInPortuguese = await traduzirTexto(data.horoscope);
+      resultado.innerHTML = `
+        <p><strong>Previsão:</strong> ${horoscopeInPortuguese}</p>
+      `;
+    } else {
+      resultado.innerText = "Não foi possível encontrar a previsão.";
+    }
+  } catch (error) {
+    console.error("Erro na requisição:", error);
+    resultado.innerText = "Erro ao buscar a previsão. Tente novamente mais tarde.";
+  }
+}
 
-    resultado.innerHTML = `
-      <p><strong>${data.date}</strong></p>
-      <p>${data.horoscope}</p>
-    `;
-  } catch (err) {
-    resultado.innerText = "Erro ao buscar a previsão.";
-    console.error("Erro:", err);
+// Função para traduzir o texto para português
+async function traduzirTexto(texto) {
+  try {
+    const respostaTraducao = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(texto)}&langpair=en|pt`);
+    const dadosTraducao = await respostaTraducao.json();
+    return dadosTraducao.responseData.translatedText;
+  } catch (error) {
+    console.error("Erro na tradução:", error);
+    return texto;  // Se falhar, retorna o texto original
   }
 }
