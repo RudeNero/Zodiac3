@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Horóscopo do Dia</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Horóscopo do Dia</h1>
+    <select id="signo">
+      <option value="">Selecione seu signo</option>
+      <option value="aries">Áries</option>
+      <option value="taurus">Touro</option>
+      <option value="gemini">Gêmeos</option>
+      <option value="cancer">Câncer</option>
+      <option value="leo">Leão</option>
+      <option value="virgo">Virgem</option>
+      <option value="libra">Libra</option>
+      <option value="scorpio">Escorpião</option>
+      <option value="sagittarius">Sagitário</option>
+      <option value="capricorn">Capricórnio</option>
+      <option value="aquarius">Aquário</option>
+      <option value="pisces">Peixes</option>
+    </select>
+    <button onclick="buscarPrevisao()">Ver Previsão</button>
+    <div id="resultado"></div>
+  </div>
+  <script src="script.js"></script>
+</body>
+</html>
